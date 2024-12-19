@@ -119,6 +119,7 @@ const ChartPage = () => {
         style={{
           position: 'relative',
           bottom: '20px',
+          width:"1000px",
           marginTop: '20px',
         }}
       >

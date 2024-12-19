@@ -128,10 +128,10 @@ function FinanceScreen() {
         onSave={handleEditItem}
       />
 
-      <Button
+      <Button id='1'
         type="primary"
         onClick={handleBackToDashboard}
-        style={{ position: 'relative', bottom: '20px', left: '50%', transform: 'translateX(-50%)' , marginTop:"20px"  }}
+        style={{ position: 'sticky' , bottom: 10 , width:"700 px"  }}
       > 
         Back to Dashboard
       </Button>
