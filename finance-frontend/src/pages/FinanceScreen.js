@@ -1,82 +1,98 @@
 import '../App.css';
-import TransactionList from "../components/TransactionList"
+import TransactionList from "../components/TransactionList";
+import EditItem from "../components/EditItem";
 import { useState, useEffect } from 'react';
 import dayjs from 'dayjs';
-import { Divider } from 'antd';
+import { Divider, Spin, Typography, message, Button } from 'antd';
 import AddItem from '../components/AddItem';
-import { Spin, Typography } from 'antd';
-import axios from 'axios'
+import axios from 'axios';
+import { Link } from 'react-router-dom';  // Import Link
 
-const URL_TXACTIONS = '/api/txactions'
+const URL_TXACTIONS = '/api/txactions';
 
 function FinanceScreen() {
   const [summaryAmount, setSummaryAmount] = useState(0);
-  const [isLoading, setIsLoading] = useState(false)
-  const [transactionData, setTransactionData] = useState([])
+  const [isLoading, setIsLoading] = useState(false);
+  const [transactionData, setTransactionData] = useState([]);
+  const [editingItem, setEditingItem] = useState(null); 
+  const [isEditing, setIsEditing] = useState(false);
 
   const fetchItems = async () => {
     try {
-      setIsLoading(true)
-      const response = await axios.get(URL_TXACTIONS)
+      setIsLoading(true);
+      const response = await axios.get(URL_TXACTIONS);
       setTransactionData(response.data.data.map(row => ({
         id: row.id,
         key: row.id,
         ...row.attributes
-      })))
+      })));
     } catch (err) {
-      console.log(err)
-    } finally { setIsLoading(false) }
-  }
+      console.log(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleAddItem = async (item) => {
     try {
-      setIsLoading(true)
-      const params = { ...item, action_datetime: dayjs() }
-      const response = await axios.post(URL_TXACTIONS, { data: params })
-      const { id, attributes } = response.data.data
+      setIsLoading(true);
+      const params = { ...item, action_datetime: dayjs() };
+      const response = await axios.post(URL_TXACTIONS, { data: params });
+      const { id, attributes } = response.data.data;
       setTransactionData([
         ...transactionData,
         { id: id, key: id, ...attributes }
-      ])
+      ]);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
-  const handleNoteChanged = (id, note) => {
-    setTransactionData(
-      transactionData.map(transaction => {
-        transaction.note = transaction.id === id ? note : transaction.note;
-        return transaction
-      })
-    )
-  }
+  const handleEditItem = async (item) => {
+    try {
+      setIsLoading(true);
+      await axios.put(`${URL_TXACTIONS}/${item.id}`, { data: item });
+      setTransactionData(prevData =>
+        prevData.map(transaction =>
+          transaction.id === item.id ? { ...transaction, ...item } : transaction
+        )
+      );
+      message.success("Transaction updated successfully!");
+    } catch (err) {
+      message.error("Error updating transaction");
+      console.error(err);
+    } finally {
+      setIsEditing(false);
+      setIsLoading(false);
+    }
+  };
 
   const handleRowDeleted = async (id) => {
     try {
-      setIsLoading(true)
-      await axios.delete(`${URL_TXACTIONS}/${id}`)
-      fetchItems()
+      setIsLoading(true);
+      await axios.delete(`${URL_TXACTIONS}/${id}`);
+      setTransactionData(prevData => prevData.filter(transaction => transaction.id !== id));
     } catch (err) {
-      console.log(err)
+      message.error("Error deleting transaction");
+      console.error(err);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchItems()
-  }, [])
+    fetchItems();
+  }, []);
 
   useEffect(() => {
     setSummaryAmount(transactionData.reduce(
       (sum, transaction) => (
         transaction.type === "income" ? sum + transaction.amount : sum - transaction.amount
       ), 0)
-    )
-  }, [transactionData])
+    );
+  }, [transactionData]);
 
   return (
     <div className="App">
@@ -90,10 +106,27 @@ function FinanceScreen() {
           <Divider>บันทึก รายรับ - รายจ่าย</Divider>
           <TransactionList
             data={transactionData}
-            onNoteChanged={handleNoteChanged}
-            onRowDeleted={handleRowDeleted} />
+            onTransactionDeleted={handleRowDeleted}
+            onEditItem={(item) => {
+              setEditingItem(item);
+              setIsEditing(true);
+            }}
+          />
         </Spin>
+        
+        {/* Back to Dashboard using Link */}
+        <Link to="/">
+          <Button type="primary">
+            Back to Dashboard
+          </Button>
+        </Link>
       </header>
+      <EditItem
+        visible={isEditing}
+        item={editingItem}
+        onCancel={() => setIsEditing(false)}
+        onSave={handleEditItem}
+      />
     </div>
   );
 }
