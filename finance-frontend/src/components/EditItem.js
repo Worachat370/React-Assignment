@@ -6,7 +6,7 @@ const { Option } = Select;
 export default function EditItem({ visible, onCancel, onSave, item }) {
   const [form] = Form.useForm();
 
-
+  // เมื่อ modal แสดง, โหลดข้อมูลเดิมเข้า form
   React.useEffect(() => {
     if (item) {
       form.setFieldsValue(item);
@@ -22,7 +22,7 @@ export default function EditItem({ visible, onCancel, onSave, item }) {
         form
           .validateFields()
           .then((values) => {
-            onSave({ ...item, ...values }); 
+            onSave({ ...item, ...values }); // ส่งข้อมูลที่แก้ไขกลับ
             form.resetFields();
           })
           .catch((info) => {
@@ -34,7 +34,7 @@ export default function EditItem({ visible, onCancel, onSave, item }) {
         <Form.Item
           name="type"
           label="Type"
-          rules={[{ required: true, message: "เลือกประเภท" }]}
+          rules={[{ required: true, message: "Please select a type!" }]}
         >
           <Select>
             <Option value="income">Income</Option>

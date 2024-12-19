@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Table, Space, Tag, Popconfirm, Modal } from "antd";
-import { DeleteOutlined, BugOutlined } from '@ant-design/icons';
+import { Button, Table, Space, Tag, Popconfirm } from "antd";
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import dayjs from "dayjs";
 
 export default function TransactionList(props) {
@@ -28,10 +28,24 @@ export default function TransactionList(props) {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
+          {/* ปุ่ม Edit */}
+          <Button
+            type="primary"
+            shape="circle"
+            icon={<EditOutlined />}
+            onClick={() => props.onEditItem(record)} // เรียกฟังก์ชันแก้ไข
+          />
+          {/* ปุ่ม Delete */}
           <Popconfirm
             title="Delete the transaction"
             description="Are you sure to delete this transaction?"
-            onConfirm={() => props.onTransactionDeleted(record.id)} 
+            onConfirm={() => {
+              if (typeof props.onTransactionDeleted === "function") {
+                props.onTransactionDeleted(record.id);
+              } else {
+                console.error("onTransactionDeleted is not defined or not a function");
+              }
+            }}
           >
             <Button
               danger
@@ -41,25 +55,12 @@ export default function TransactionList(props) {
               loading={props.isLoading} 
             />
           </Popconfirm>
-          <Button
-            type="primary"
-            shape="circle"
-            icon={<BugOutlined />}
-            onClick={() => {
-              Modal.info({
-                title: "Debug",
-                content: <pre>{JSON.stringify(record, null, 2)}</pre>, 
-              });
-            }}
-          />
         </Space>
       ),
     },
   ];
 
   return (
-    <>
-      <Table columns={columns} dataSource={props.data} rowKey="id" /> {/* เพิ่ม rowKey */}
-    </>
+    <Table columns={columns} dataSource={props.data} rowKey="id" />
   );
 }

@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { Divider, Spin, Typography, message, Button } from 'antd';
 import AddItem from '../components/AddItem';
 import axios from 'axios';
-import { Link } from 'react-router-dom';  // Import Link
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const URL_TXACTIONS = '/api/txactions';
 
@@ -14,8 +14,10 @@ function FinanceScreen() {
   const [summaryAmount, setSummaryAmount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [transactionData, setTransactionData] = useState([]);
-  const [editingItem, setEditingItem] = useState(null); 
-  const [isEditing, setIsEditing] = useState(false);
+  const [editingItem, setEditingItem] = useState(null); // เก็บข้อมูลรายการที่กำลังแก้ไข
+  const [isEditing, setIsEditing] = useState(false); // สถานะแสดง modal
+
+  const navigate = useNavigate(); // Initialize useNavigate hook
 
   const fetchItems = async () => {
     try {
@@ -94,9 +96,13 @@ function FinanceScreen() {
     );
   }, [transactionData]);
 
+  const handleBackToDashboard = () => {
+    navigate('/'); 
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
+    <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <header className="App-header" style={{ flex: 1 }}>
         <Spin spinning={isLoading}>
           <Typography.Title>
             จำนวนเงินปัจจุบัน {summaryAmount} บาท
@@ -113,20 +119,23 @@ function FinanceScreen() {
             }}
           />
         </Spin>
-        
-        {/* Back to Dashboard using Link */}
-        <Link to="/">
-          <Button type="primary">
-            Back to Dashboard
-          </Button>
-        </Link>
       </header>
+
       <EditItem
         visible={isEditing}
         item={editingItem}
         onCancel={() => setIsEditing(false)}
         onSave={handleEditItem}
       />
+
+      <Button
+        type="primary"
+        onClick={handleBackToDashboard}
+        style={{ position: 'relative', bottom: '20px', left: '50%', transform: 'translateX(-50%)' , marginTop:"20px"  }}
+      > 
+        Back to Dashboard
+      </Button>
+      <br></br>
     </div>
   );
 }

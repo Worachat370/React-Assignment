@@ -1,12 +1,12 @@
 import './App.css';
 import axios from 'axios';
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginScreen from './pages/LoginScreen';
 import Prepage from './pages/Prepage';
 import DashBoard from './pages/DashBoard';
 import FinanceScreen from './pages/FinanceScreen';
-import ChartPage from './pages/ChartPage'; // Import ChartPage
+import ChartPage from './pages/ChartPage';
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 
@@ -22,12 +22,14 @@ function App() {
       <div className="App">
         <header className="App-header">
           {!hasStarted && <Prepage onStart={handleStart} />}
-          {hasStarted && !isAuthenticated && <LoginScreen onLoginSuccess={handleLoginSuccess} />}
+          {hasStarted && !isAuthenticated && (
+            <LoginScreen onLoginSuccess={handleLoginSuccess} />
+          )}
           {hasStarted && isAuthenticated && (
             <Routes>
               <Route path="/" element={<DashBoard />} />
               <Route path="/finance" element={<FinanceScreen />} />
-              <Route path="/chart" element={<ChartPage />} /> {/* Chart route */}
+              <Route path="/chart" element={<ChartPage />} />
             </Routes>
           )}
         </header>
