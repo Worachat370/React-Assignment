@@ -1,6 +1,5 @@
 import React from 'react';
 import { Button, Typography, Space } from 'antd';
-import './Prepage.css'; 
 
 const { Title } = Typography;
 
@@ -9,23 +8,47 @@ const Prepage = ({ onStart }) => {
     <div 
       className="Prepage" 
       style={{
-        backgroundImage: 'url("path-to-your-image.jpg")', 
-        backgroundSize: 'cover', 
-        backgroundPosition: 'center', 
-        height: '100vh', 
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
+        position: 'relative',
+        height: '40vh',
+        margin: 0, 
+        padding: 0,
       }}
     >
+      <video 
+        src="/images/Download.mp4" 
+        autoPlay 
+        loop 
+        muted 
+        style={{
+          position: 'fixed',
+          top: 150,
+          left: 550,
+          width: '100%',
+          height: '70%'}}
+      />
+      <video 
+        src="/images/Download.mp4" 
+        autoPlay 
+        loop 
+        muted 
+        style={{
+          position: 'fixed',
+          top: 150,
+          right: 550,
+          width: '100%',
+          height: '70%'}}
+      />
+
       <div 
         className="content"
         style={{
-          backgroundColor: 'white', 
-          padding: '40px', 
-          borderRadius: '10px', 
+          backgroundColor: 'white',
+          padding: '40px',
+          borderRadius: '10px',
           boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
-          textAlign: 'center', 
+          textAlign: 'center',
+          maxWidth: '600px', 
+          margin: 'auto', 
         }}
       >
         <Title level={1} className="title">Welcome to the Finance Tracker</Title>
