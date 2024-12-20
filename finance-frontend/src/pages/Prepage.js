@@ -21,10 +21,10 @@ const Prepage = ({ onStart }) => {
         muted 
         style={{
           position: 'fixed',
-          top: 150,
-          left: 550,
+          top:0 ,
+          left: 575,
           width: '100%',
-          height: '70%'}}
+          height: '100%'}}
       />
       <video 
         src="/images/Download.mp4" 
@@ -33,10 +33,10 @@ const Prepage = ({ onStart }) => {
         muted 
         style={{
           position: 'fixed',
-          top: 150,
-          right: 550,
+          top:0,
+          right: 575,
           width: '100%',
-          height: '70%'}}
+          height: '100%'}}
       />
 
       <div 
