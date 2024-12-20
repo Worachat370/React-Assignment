@@ -6,7 +6,7 @@ import dayjs from 'dayjs';
 import { Divider, Spin, Typography, message, Button } from 'antd';
 import AddItem from '../components/AddItem';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
+import { useNavigate } from 'react-router-dom'; 
 
 const URL_TXACTIONS = '/api/txactions';
 
@@ -14,10 +14,10 @@ function FinanceScreen() {
   const [summaryAmount, setSummaryAmount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [transactionData, setTransactionData] = useState([]);
-  const [editingItem, setEditingItem] = useState(null); // เก็บข้อมูลรายการที่กำลังแก้ไข
-  const [isEditing, setIsEditing] = useState(false); // สถานะแสดง modal
+  const [editingItem, setEditingItem] = useState(null); 
+  const [isEditing, setIsEditing] = useState(false); 
 
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const navigate = useNavigate(); 
 
   const fetchItems = async () => {
     try {

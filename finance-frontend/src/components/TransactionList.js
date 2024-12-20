@@ -28,22 +28,20 @@ export default function TransactionList(props) {
       key: "action",
       render: (_, record) => (
         <Space size="middle">
-          {/* ปุ่ม Edit */}
           <Button
             type="primary"
             shape="circle"
             icon={<EditOutlined />}
-            onClick={() => props.onEditItem(record)} // เรียกฟังก์ชันแก้ไข
+            onClick={() => props.onEditItem(record)} 
           />
-          {/* ปุ่ม Delete */}
           <Popconfirm
             title="Delete the transaction"
-            description="Are you sure to delete this transaction?"
+            description="กดยืนยันเพื่อลบ?"
             onConfirm={() => {
               if (typeof props.onTransactionDeleted === "function") {
                 props.onTransactionDeleted(record.id);
               } else {
-                console.error("onTransactionDeleted is not defined or not a function");
+                console.error("Something Error");
               }
             }}
           >

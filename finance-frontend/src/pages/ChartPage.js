@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import axios from 'axios';
-import { Button } from 'antd'; // Import the Button from Ant Design
-import { useNavigate } from 'react-router-dom'; // Import useNavigate from react-router-dom
+import { Button } from 'antd'; 
+import { useNavigate } from 'react-router-dom'; 
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -14,7 +14,6 @@ import {
   Legend,
 } from 'chart.js';
 
-// Register chart components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -26,17 +25,15 @@ ChartJS.register(
 );
 
 const ChartPage = () => {
-  const [chartData, setChartData] = useState(null); // To store chart data
-  const navigate = useNavigate(); // Initialize useNavigate hook
+  const [chartData, setChartData] = useState(null); 
+  const navigate = useNavigate(); 
 
-  // Fetch data from Strapi
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get('http://localhost:1337/api/txactions');
         const txactions = response.data.data;
 
-        // Process data
         const labels = txactions.map((item) =>
           new Date(item.attributes.action_datetime).toLocaleString()
         );
@@ -73,7 +70,7 @@ const ChartPage = () => {
           ],
         });
       } catch (error) {
-        console.error('Error fetching data from Strapi:', error);
+        console.error('การดึงข้อมูลจากเซิฟเวอร์มีข้อผิดพลาด:', error);
       }
     };
 
@@ -84,12 +81,10 @@ const ChartPage = () => {
     return <div>Loading...</div>;
   }
 
-  // Handle the Back to Dashboard button click
   const handleBackToDashboard = () => {
-    navigate('/'); // Navigate back to the dashboard route
+    navigate('/'); 
   };
 
-  // Chart options
   const options = {
     responsive: true,
     plugins: {

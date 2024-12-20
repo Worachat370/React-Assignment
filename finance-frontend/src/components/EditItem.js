@@ -6,7 +6,6 @@ const { Option } = Select;
 export default function EditItem({ visible, onCancel, onSave, item }) {
   const [form] = Form.useForm();
 
-  // เมื่อ modal แสดง, โหลดข้อมูลเดิมเข้า form
   React.useEffect(() => {
     if (item) {
       form.setFieldsValue(item);
@@ -22,7 +21,7 @@ export default function EditItem({ visible, onCancel, onSave, item }) {
         form
           .validateFields()
           .then((values) => {
-            onSave({ ...item, ...values }); // ส่งข้อมูลที่แก้ไขกลับ
+            onSave({ ...item, ...values }); 
             form.resetFields();
           })
           .catch((info) => {
@@ -34,17 +33,17 @@ export default function EditItem({ visible, onCancel, onSave, item }) {
         <Form.Item
           name="type"
           label="Type"
-          rules={[{ required: true, message: "Please select a type!" }]}
+          rules={[{ required: true, message: "เลือกประเภท" }]}
         >
           <Select>
-            <Option value="income">Income</Option>
-            <Option value="expense">Expense</Option>
+            <Option value="income">รายรับ</Option>
+            <Option value="expense">รายจ่าย</Option>
           </Select>
         </Form.Item>
         <Form.Item
           name="amount"
           label="Amount"
-          rules={[{ required: true, message: "Please input the amount!" }]}
+          rules={[{ required: true, message: "ใส่จำนวนเงิน" }]}
         >
           <InputNumber style={{ width: "100%" }} />
         </Form.Item>

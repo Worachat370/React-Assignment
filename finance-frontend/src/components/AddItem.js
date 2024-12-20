@@ -36,7 +36,7 @@ export default function AddItem(props) {
         name="note"
         label="หมายเหตุ"
         rules={[{ required: true }]}>
-        <Input placeholder="Note" />
+        <Input placeholder="หมายเหตุ" />
       </Form.Item>
       
       <Form.Item>

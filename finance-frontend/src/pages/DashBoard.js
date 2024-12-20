@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom"; 
 import Homepageicon from "../images/Homepageicon.png";
 
-function DashBoard() {
+function DashBoard({ onLogout }) {
   return (
     <>
       <div className="container">
@@ -22,7 +22,7 @@ function DashBoard() {
         </Link>
         <br />
         
-        <button style={{ padding: "10px 20px", fontSize: "16px" }}>
+        <button onClick={onLogout} style={{ padding: "10px 20px", fontSize: "16px" }}>
           Logout
         </button>
         <br />

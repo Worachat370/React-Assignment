@@ -1,12 +1,13 @@
 import './App.css';
 import axios from 'axios';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import LoginScreen from './pages/LoginScreen';
 import Prepage from './pages/Prepage';
 import DashBoard from './pages/DashBoard';
 import FinanceScreen from './pages/FinanceScreen';
 import ChartPage from './pages/ChartPage';
+import Cookies from 'js-cookie'; 
 
 axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 
@@ -14,8 +15,25 @@ function App() {
   const [hasStarted, setHasStarted] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (token) {
+      axios.defaults.headers.common = { 'Authorization': `bearer ${token}` };
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   const handleStart = () => setHasStarted(true);
-  const handleLoginSuccess = () => setIsAuthenticated(true);
+
+  const handleLoginSuccess = (token) => {
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    Cookies.remove('token');
+    setIsAuthenticated(false);
+    axios.defaults.headers.common = {}; 
+  };
 
   return (
     <Router>
@@ -27,7 +45,7 @@ function App() {
           )}
           {hasStarted && isAuthenticated && (
             <Routes>
-              <Route path="/" element={<DashBoard />} />
+              <Route path="/" element={<DashBoard onLogout={handleLogout} />} />
               <Route path="/finance" element={<FinanceScreen />} />
               <Route path="/chart" element={<ChartPage />} />
             </Routes>
