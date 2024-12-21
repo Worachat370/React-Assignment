@@ -1,33 +1,35 @@
-import '../App.css';
+import "../App.css";
 import TransactionList from "../components/TransactionList";
 import EditItem from "../components/EditItem";
-import { useState, useEffect } from 'react';
-import dayjs from 'dayjs';
-import { Divider, Spin, Typography, message, Button } from 'antd';
-import AddItem from '../components/AddItem';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
+import { useState, useEffect } from "react";
+import dayjs from "dayjs";
+import { Divider, Spin, Typography, message, Button } from "antd";
+import AddItem from "../components/AddItem";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const URL_TXACTIONS = '/api/txactions';
+const URL_TXACTIONS = "/api/txactions";
 
 function FinanceScreen() {
   const [summaryAmount, setSummaryAmount] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
   const [transactionData, setTransactionData] = useState([]);
-  const [editingItem, setEditingItem] = useState(null); 
-  const [isEditing, setIsEditing] = useState(false); 
+  const [editingItem, setEditingItem] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const fetchItems = async () => {
     try {
       setIsLoading(true);
       const response = await axios.get(URL_TXACTIONS);
-      setTransactionData(response.data.data.map(row => ({
-        id: row.id,
-        key: row.id,
-        ...row.attributes
-      })));
+      setTransactionData(
+        response.data.data.map((row) => ({
+          id: row.id,
+          key: row.id,
+          ...row.attributes,
+        }))
+      );
     } catch (err) {
       console.log(err);
     } finally {
@@ -43,7 +45,7 @@ function FinanceScreen() {
       const { id, attributes } = response.data.data;
       setTransactionData([
         ...transactionData,
-        { id: id, key: id, ...attributes }
+        { id: id, key: id, ...attributes },
       ]);
     } catch (err) {
       console.log(err);
@@ -56,14 +58,14 @@ function FinanceScreen() {
     try {
       setIsLoading(true);
       await axios.put(`${URL_TXACTIONS}/${item.id}`, { data: item });
-      setTransactionData(prevData =>
-        prevData.map(transaction =>
+      setTransactionData((prevData) =>
+        prevData.map((transaction) =>
           transaction.id === item.id ? { ...transaction, ...item } : transaction
         )
       );
       message.success("Transaction updated successfully!");
     } catch (err) {
-      message.error("Error updating transaction");
+      message.error("แก้ไขสำเร็จ");
       console.error(err);
     } finally {
       setIsEditing(false);
@@ -75,9 +77,11 @@ function FinanceScreen() {
     try {
       setIsLoading(true);
       await axios.delete(`${URL_TXACTIONS}/${id}`);
-      setTransactionData(prevData => prevData.filter(transaction => transaction.id !== id));
+      setTransactionData((prevData) =>
+        prevData.filter((transaction) => transaction.id !== id)
+      );
     } catch (err) {
-      message.error("Error deleting transaction");
+      message.error("มีข้อผิดพลาดในการลบ");
       console.error(err);
     } finally {
       setIsLoading(false);
@@ -89,19 +93,26 @@ function FinanceScreen() {
   }, []);
 
   useEffect(() => {
-    setSummaryAmount(transactionData.reduce(
-      (sum, transaction) => (
-        transaction.type === "income" ? sum + transaction.amount : sum - transaction.amount
-      ), 0)
+    setSummaryAmount(
+      transactionData.reduce(
+        (sum, transaction) =>
+          transaction.type === "income"
+            ? sum + transaction.amount
+            : sum - transaction.amount,
+        0
+      )
     );
   }, [transactionData]);
 
-  const handleBackToDashboard = () => {
-    navigate('/'); 
+  const handleBackToHome = () => {
+    navigate("/");
   };
 
   return (
-    <div className="App" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+    <div
+      className="App"
+      style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
+    >
       <header className="App-header" style={{ flex: 1 }}>
         <Spin spinning={isLoading}>
           <Typography.Title>
@@ -128,12 +139,13 @@ function FinanceScreen() {
         onSave={handleEditItem}
       />
 
-      <Button id='1'
+      <Button
+        id="1"
         type="primary"
-        onClick={handleBackToDashboard}
-        style={{ position: 'sticky' , bottom: 10 , width:"700 px"  }}
-      > 
-        Back to Dashboard
+        onClick={handleBackToHome}
+        style={{ position: "sticky", bottom: 10, width: "700 px" }}
+      >
+        Back to Home
       </Button>
       <br></br>
     </div>

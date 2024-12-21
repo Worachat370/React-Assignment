@@ -5,7 +5,7 @@ import { LogoutOutlined } from "@ant-design/icons";
 
 const { Title } = Typography;
 
-function DashBoard({ onLogout }) {
+function Home({ onLogout }) {
   return (
     <>
       <div
@@ -39,25 +39,25 @@ function DashBoard({ onLogout }) {
               style={{
                 width: "250px",
                 backgroundColor: "#000000",
-                color: "white", 
-                borderColor: "#000000", 
+                color: "white",
+                borderColor: "#000000",
               }}
             >
-              Chart Dataset
+              Chart Data
             </Button>
           </Link>
           <br />
 
           <Button
-            type="danger" 
+            type="danger"
             size="large"
             icon={<LogoutOutlined />}
             onClick={onLogout}
             style={{
               width: "250px",
-              backgroundColor: "#ff4d4f", 
-              color: "white", 
-              borderColor: "#ff4d4f", 
+              backgroundColor: "#ff4d4f",
+              color: "white",
+              borderColor: "#ff4d4f",
             }}
           >
             Logout
@@ -69,4 +69,4 @@ function DashBoard({ onLogout }) {
   );
 }
 
-export default DashBoard;
+export default Home;

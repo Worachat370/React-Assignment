@@ -1,24 +1,25 @@
-import './App.css';
-import axios from 'axios';
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LoginScreen from './pages/LoginScreen';
-import Prepage from './pages/Prepage';
-import DashBoard from './pages/DashBoard';
-import FinanceScreen from './pages/FinanceScreen';
-import ChartPage from './pages/ChartPage';
-import Cookies from 'js-cookie'; 
+import "./App.css";
+import axios from "axios";
+import { useState, useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import LoginScreen from "./pages/LoginScreen";
+import Prepage from "./pages/Prepage";
+import Home from "./pages/Home";
+import FinanceScreen from "./pages/FinanceScreen";
+import ChartPage from "./pages/ChartPage";
+import Cookies from "js-cookie";
 
-axios.defaults.baseURL = process.env.REACT_APP_BASE_URL || "http://localhost:1337";
+axios.defaults.baseURL =
+  process.env.REACT_APP_BASE_URL || "http://localhost:1337";
 
 function App() {
   const [hasStarted, setHasStarted] = useState(false);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   useEffect(() => {
-    const token = Cookies.get('token');
+    const token = Cookies.get("token");
     if (token) {
-      axios.defaults.headers.common = { 'Authorization': `bearer ${token}` };
+      axios.defaults.headers.common = { Authorization: `bearer ${token}` };
       setIsAuthenticated(true);
     }
   }, []);
@@ -30,9 +31,9 @@ function App() {
   };
 
   const handleLogout = () => {
-    Cookies.remove('token');
+    Cookies.remove("token");
     setIsAuthenticated(false);
-    axios.defaults.headers.common = {}; 
+    axios.defaults.headers.common = {};
   };
 
   return (
@@ -45,7 +46,7 @@ function App() {
           )}
           {hasStarted && isAuthenticated && (
             <Routes>
-              <Route path="/" element={<DashBoard onLogout={handleLogout} />} />
+              <Route path="/" element={<Home onLogout={handleLogout} />} />
               <Route path="/finance" element={<FinanceScreen />} />
               <Route path="/chart" element={<ChartPage />} />
             </Routes>
