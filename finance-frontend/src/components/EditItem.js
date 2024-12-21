@@ -32,7 +32,7 @@ export default function EditItem({ visible, onCancel, onSave, item }) {
       <Form form={form} layout="vertical">
         <Form.Item
           name="type"
-          label="Type"
+          label="ชนิด"
           rules={[{ required: true, message: "เลือกประเภท" }]}
         >
           <Select>
@@ -42,12 +42,12 @@ export default function EditItem({ visible, onCancel, onSave, item }) {
         </Form.Item>
         <Form.Item
           name="amount"
-          label="Amount"
+          label="จำนวนเงิน"
           rules={[{ required: true, message: "ใส่จำนวนเงิน" }]}
         >
           <InputNumber style={{ width: "100%" }} />
         </Form.Item>
-        <Form.Item name="note" label="Note">
+        <Form.Item name="note" label="หมายเหตุ">
           <Input />
         </Form.Item>
       </Form>
